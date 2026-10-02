@@ -4,7 +4,7 @@ public class BankingProgram {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         char currency = '$';
-        double balance = 300.32;
+        double balance = 0;
         int choice;
         boolean isOnline = true;
 
