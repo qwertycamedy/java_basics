@@ -1,9 +1,9 @@
 public class Main {
     public static void main(String[] args) {
-        Fish fish = new Fish();
-        Dog dog = new Dog();
+        Car car1 = new Car("nissan", "silvia");
+        Car car2 = new Car("ford", "mustang");
 
-        fish.move();
-        dog.move();
+        System.out.println(car1);
+        System.out.println(car2);
     }
 }
