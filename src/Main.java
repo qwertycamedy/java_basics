@@ -1,9 +1,12 @@
 public class Main {
     public static void main(String[] args) {
-        Car car1 = new Car("nissan", "silvia");
-        Car car2 = new Car("ford", "mustang");
+        Circle circle = new Circle(3);
+        Rectangle rectangle = new Rectangle(3, 4);
 
-        System.out.println(car1);
-        System.out.println(car2);
+        circle.display();
+        circle.area();
+
+        rectangle.display();
+        rectangle.area();
     }
 }
