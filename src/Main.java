@@ -1,14 +1,25 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Car car = new Car();
-        Boat boat = new Boat();
+        Scanner scanner = new Scanner(System.in);
+        // runtime (dynamic) polymorphism = исполняемому объекту дается нужный класс во
+        // время выполнения программы
+        Vehicle vehicle;
 
-        //polymorphism это возможность использовать множество разных классов с чем-то общим, как например массив транспортных средств:
-        Vehicle[] vehicles = {car, boat};
-        
-        // у всех vehicle есть метод go и мы можем его использовать, например, в цикле
-        for (Vehicle vehicle : vehicles) {
-            vehicle.go();
+        System.out.println("car or bike? Enter your choice: (1/2)");
+        String choice = scanner.nextLine();
+
+        if (choice.equals("1")) {
+            vehicle = new Car();
+        } else if (choice.equals("2")) {
+            vehicle = new Bike();
+        } else {
+            vehicle = new Car();
         }
+
+        vehicle.go();
+
+        scanner.close();
     }
 }
