@@ -1,12 +1,14 @@
 public class Main {
     public static void main(String[] args) {
-        Circle circle = new Circle(3);
-        Rectangle rectangle = new Rectangle(3, 4);
+        Rabbit rabbit = new Rabbit();
+        Wolf wolf = new Wolf();
+        Fish fish = new Fish();
 
-        circle.display();
-        circle.area();
+        wolf.hunt();
+        rabbit.flee();
+        System.out.println();
 
-        rectangle.display();
-        rectangle.area();
+        fish.hunt();
+        fish.flee();
     }
 }
