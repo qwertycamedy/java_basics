@@ -1,47 +1,39 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        // arrayLists / стандартные массивы в java имеют фиксированную длину, а
-        // arraylist позволяет нам добавлять и легко изменять/удалять элементы в массив
-        // ArrayList<String> list = new ArrayList<>(List.of("apple", "banana"));
+        // при ошибке приложение полностью останавливает выполнение и оставшийся код не
+        // отрабатывает
+        // System.out.print("num: ");
+        // например, если ввести здесь строковое значение, то программа заглохнет
+        // int num = scanner.nextInt();
+        // scanner.nextLine();
+        // System.out.println(num);
+        // scanner.close();
 
-        // list.add("orange");
-        // list.add("grapefruit");
+        // для решения данной проблемы существуют "исключения"/exceptions, которые
+        // позволяют обрабатывать ошибки с нашим собственным сценарием
+        // реализовать мы это можем через try (Resourse) / catch (SomeException) /
+        // finally
 
-        // list.set(1, "pineapple");
+        // в try (...) можно вписывать ресурсы и, например, scanner.close() сам выполнится в finally
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("10 + num. Enter num: ");
+            int num = scanner.nextInt();
+            scanner.nextLine();
 
-        // list.remove(3);
+            int result = 10 + num;
 
-        // System.out.println(list);
-
-        ArrayList<String> fruits = new ArrayList<>();
-        ArrayList<Integer> nums = new ArrayList<>(List.of(1, 2, 3)); // чтобы хранить примитивы в arraylist, нужно
-                                                                     // оборачивать их в объект Integer и делать их
-                                                                     // refference data
-
-        System.out.println("how many fruits you want to add to fruits arraylist?");
-        System.out.println("Enter #: (int)");
-        int numOfSum = Integer.parseInt(scanner.nextLine()); // тут кстати показывается, как примитивы оборачивать в
-                                                             // объекты
-
-        for (int i = 0; i < numOfSum; i++) {
-            System.out.println("Enter fruit name: ");
-            String fruit = scanner.nextLine();
-            fruits.add(fruit);
+            System.out.println("result: " + result);
+        } catch (InputMismatchException e) {
+            System.out.println("Input mismatch exception: " + e);
+        } catch (ArithmeticException e) {
+            System.out.println("Arifmetic Exception: " + e);
+        } catch (Exception e) {
+            System.out.println("Something went wrong: " + e);
+        } finally {
+            System.out.println("FINALLY ALERT!");
         }
-
-        System.out.println();
-        System.out.println(fruits);
-        System.out.println();
-
-        for (String fruit : fruits) {
-            System.out.println(fruit);
-        }
-
-        scanner.close();
     }
 }
