@@ -1,27 +1,28 @@
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        // write files
-        // есть четыре способа делать это
-        // в этом уроке будет самый простой для легких-средних текстовых файлов
-        String path = "/Users/qwertycamedy/Downloads/";
-        String name = "test.txt";
-        String textContent = """
-                New file with some text
-                Hello world
-                Hello file
-                        """;
+        // read files
+        // читать файлы мы можем с помощью трех популярных способов
+        // Buffered reader + File Reader = лучший способ чтения текстовых файлов
+        // lineByLine
+        // FileInputStream = binary files (e.g., images, audio files);
+        // RandomAccessFile = Best for read/write specific portions of a large file
 
-        try (FileWriter fileWriter = new FileWriter(path + name)) {
-            fileWriter.write(textContent);
-            System.out.println("file has been written");
+        String path = "/Users/qwertycamedy/Documents/dev/JavaFirstProject/test.txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
         } catch (FileNotFoundException e) {
-            System.out.println("could not locate file location");
+            System.out.println("File not found!");
         } catch (IOException e) {
-            System.out.println("could not write file");
+            System.out.println("Something went wrong!");
         }
     }
 }
