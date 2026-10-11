@@ -1,28 +1,54 @@
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Main {
     public static void main(String[] args) {
-        // read files
-        // читать файлы мы можем с помощью трех популярных способов
-        // Buffered reader + File Reader = лучший способ чтения текстовых файлов
-        // lineByLine
-        // FileInputStream = binary files (e.g., images, audio files);
-        // RandomAccessFile = Best for read/write specific portions of a large file
+        String path = "/Users/qwertycamedy/Documents/dev/JavaFirstProject/src/song.wav";
+        File file = new File(path);
 
-        String path = "/Users/qwertycamedy/Documents/dev/JavaFirstProject/test.txt";
+        try (
+                Scanner scanner = new Scanner(System.in);
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+                Clip clip = AudioSystem.getClip();) {
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+            clip.open(audioStream);
+            String response = "";
+
+            while (!response.equals("Q")) {
+                System.out.println("P - play");
+                System.out.println("S - stop");
+                System.out.println("R - reset");
+                System.out.println("Q - quit");
+                System.out.print("Enter your choice: ");
+                response = scanner.next().toUpperCase();
+
+                switch (response) {
+                    case "P" -> clip.start();
+                    case "S" -> clip.stop();
+                    case "R" -> clip.setMicrosecondPosition(0);
+                    case "Q" -> clip.close();
+                    default -> System.out.println("Invalid choice!\n");
+                }
             }
+
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
+        } catch (UnsupportedAudioFileException e) {
+            System.out.println("File format is unsupported!");
+        } catch (LineUnavailableException e) {
+            System.out.println("Unable to access file!");
         } catch (IOException e) {
             System.out.println("Something went wrong!");
+        } finally {
+            System.out.println("Bye Bye! :)");
         }
     }
 }
