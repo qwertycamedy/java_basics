@@ -1,39 +1,27 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        // при ошибке приложение полностью останавливает выполнение и оставшийся код не
-        // отрабатывает
-        // System.out.print("num: ");
-        // например, если ввести здесь строковое значение, то программа заглохнет
-        // int num = scanner.nextInt();
-        // scanner.nextLine();
-        // System.out.println(num);
-        // scanner.close();
+        // write files
+        // есть четыре способа делать это
+        // в этом уроке будет самый простой для легких-средних текстовых файлов
+        String path = "/Users/qwertycamedy/Downloads/";
+        String name = "test.txt";
+        String textContent = """
+                New file with some text
+                Hello world
+                Hello file
+                        """;
 
-        // для решения данной проблемы существуют "исключения"/exceptions, которые
-        // позволяют обрабатывать ошибки с нашим собственным сценарием
-        // реализовать мы это можем через try (Resourse) / catch (SomeException) /
-        // finally
-
-        // в try (...) можно вписывать ресурсы и, например, scanner.close() сам выполнится в finally
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print("10 + num. Enter num: ");
-            int num = scanner.nextInt();
-            scanner.nextLine();
-
-            int result = 10 + num;
-
-            System.out.println("result: " + result);
-        } catch (InputMismatchException e) {
-            System.out.println("Input mismatch exception: " + e);
-        } catch (ArithmeticException e) {
-            System.out.println("Arifmetic Exception: " + e);
-        } catch (Exception e) {
-            System.out.println("Something went wrong: " + e);
-        } finally {
-            System.out.println("FINALLY ALERT!");
+        try (FileWriter fileWriter = new FileWriter(path + name)) {
+            fileWriter.write(textContent);
+            System.out.println("file has been written");
+        } catch (FileNotFoundException e) {
+            System.out.println("could not locate file location");
+        } catch (IOException e) {
+            System.out.println("could not write file");
         }
     }
 }
