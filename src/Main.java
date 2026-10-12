@@ -1,54 +1,124 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 public class Main {
+    static final String word = "pizza";
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        String path = "/Users/qwertycamedy/Documents/dev/JavaFirstProject/src/song.wav";
-        File file = new File(path);
+        ArrayList<Character> wordState = initializeWordState(word);
+        int wrongGuesses = 0;
 
-        try (
-                Scanner scanner = new Scanner(System.in);
-                AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-                Clip clip = AudioSystem.getClip();) {
+        welcome();
 
-            clip.open(audioStream);
-            String response = "";
+        while (wrongGuesses < 6) {
+            char guess = enterGuess();
 
-            while (!response.equals("Q")) {
-                System.out.println("P - play");
-                System.out.println("S - stop");
-                System.out.println("R - reset");
-                System.out.println("Q - quit");
-                System.out.print("Enter your choice: ");
-                response = scanner.next().toUpperCase();
+            if (word.indexOf(guess) >= 0) {
+                System.out.println("Correct guess!");
 
-                switch (response) {
-                    case "P" -> clip.start();
-                    case "S" -> clip.stop();
-                    case "R" -> clip.setMicrosecondPosition(0);
-                    case "Q" -> clip.close();
-                    default -> System.out.println("Invalid choice!\n");
+                for (int i = 0; i < word.length(); i++) {
+                    if (word.charAt(i) == guess) {
+                        wordState.set(i, guess);
+                    }
+
+                    System.out.print(wordState.get(i) + " ");
                 }
-            }
 
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found!");
-        } catch (UnsupportedAudioFileException e) {
-            System.out.println("File format is unsupported!");
-        } catch (LineUnavailableException e) {
-            System.out.println("Unable to access file!");
-        } catch (IOException e) {
-            System.out.println("Something went wrong!");
-        } finally {
-            System.out.println("Bye Bye! :)");
+                System.out.println();
+
+                if (!wordState.contains('_')) {
+                    System.out.println("You win!");
+                    showHangman(wrongGuesses);
+                    System.out.println("The guess word was: " + word);
+                    break;
+                }
+            } else {
+                System.out.println("Uncorrect guess!");
+
+                wrongGuesses++;
+                showHangman(wrongGuesses);
+            }
         }
+
+        scanner.close();
+    }
+
+    static void welcome() {
+        System.out.println("******************");
+        System.out.println("Java Hangman game!");
+        System.out.println("******************");
+    }
+
+    static ArrayList<Character> initializeWordState(String word) {
+        ArrayList<Character> wordState = new ArrayList<>();
+
+        for (int i = 0; i < word.length(); i++) {
+            wordState.add('_');
+        }
+
+        return wordState;
+    }
+
+    static void showHangman(int wrongGuesses) {
+        switch (wrongGuesses) {
+            case 0 -> {
+                System.out.println("Clear victory!");
+            }
+            case 1 -> {
+                System.out.println("""
+                        *
+
+
+                            """);
+            }
+            case 2 -> {
+                System.out.println("""
+                        *
+                        |
+                            """);
+            }
+            case 3 -> {
+                System.out.println("""
+                         *
+                        /|
+
+                         """);
+            }
+            case 4 -> {
+                System.out.println("""
+                         *
+                        /|\\
+
+                         """);
+            }
+            case 5 -> {
+                System.out.println(
+                        """
+                                 *
+                                /|\\
+                                /
+                                 """);
+            }
+            case 6 -> {
+                System.out.println(
+                        """
+                                 *
+                                /|\\
+                                / \\
+                                 """);
+            }
+            default -> {
+                System.out.println("Invalid guess num!");
+            }
+        }
+    }
+
+    static char enterGuess() {
+        System.out.print("Guess letter: ");
+        char guess = scanner.next().toLowerCase().charAt(0);
+        scanner.nextLine();
+
+        return guess;
     }
 }
