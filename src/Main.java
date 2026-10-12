@@ -1,44 +1,18 @@
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class Main {
-    static Scanner scanner = new Scanner(System.in);
-    static int count = 0;
-
     public static void main(String[] args) {
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                if (count > 0) {
+        // generics - позволяют нам создавать в классах/методах/интерфейсах
+        // концептуальные типы для того, чтобы иметь совместимость с реальными типами
+        // данных
 
-                    System.out.println(count);
-                    count--;
-                } else {
-                    System.out.println("Bipp Bipp!!!");
-                    timer.cancel();
-                }
-            }
-        };
+        // 1) вариант с одним дженериком
+        // Box<Double> box = new Box<>();
+        // box.setItem(3.14);
+        // System.out.println(box.getItem());
 
-        welcome();
-        count = setCount();
-        timer.schedule(task, 0, 1000);
-
-        scanner.close();
-    }
-
-    static void welcome() {
-        System.out.println("-----------");
-        System.out.println("Java Timer!");
-    }
-
-    static int setCount() {
-        System.out.println("-----------");
-        System.out.print("Enter a quantity of seconds for your timer: ");
-        int count = scanner.nextInt();
-        scanner.nextLine();
-        return count;
+        // 2) можно пробрасывать множество своих дженериков
+        Product<String, Integer> p1 = new Product<>("apple", 10);
+        Product<Character, Double> p2 = new Product<>('-', 0.0);
+        System.out.println(p1.getItem() + " " + p1.getPrice());
+        System.out.println(p2.getItem() + " " + p2.getPrice());
     }
 }
