@@ -1,17 +1,24 @@
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Main {
     public static void main(String[] args) {
-        //anonimous classes = для использования классов с нужным дополнительным функционалом единожды вместо того, чтобы писать новые классы/подклассы
-        //чаще всего используется для TimerTasks / Runnable / callbacks
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            int count = 3;
 
-        Dog dog1 = new Dog();
-        Dog dog2 = new Dog(){
-            @Override 
-            void speak() {
-                System.out.println("gav gav!");
+            @Override
+            public void run() {
+                if (count > 0) {
+                    System.out.println("Hello world!");
+                    count--;
+                } else {
+                    System.out.println("Bye bye!");
+                    timer.cancel();
+                }
             }
-        }; //dog2 - анонимный класс с измененным функционалом от класса Dog()
+        };
 
-        dog1.speak();
-        dog2.speak();
+        timer.schedule(task, 0, 1000);
     }
 }
