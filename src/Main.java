@@ -1,15 +1,23 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    static final String word = "pizza";
+    static final String filePath = "/Users/qwertycamedy/Documents/dev/JavaFirstProject/src/words.txt";
     static Scanner scanner = new Scanner(System.in);
+    static Random random = new Random();
 
     public static void main(String[] args) {
-        ArrayList<Character> wordState = initializeWordState(word);
+        String word = getWord();
+        ArrayList<Character> wordState;
         int wrongGuesses = 0;
 
         welcome();
+        wordState = initializeWordState(word);
 
         while (wrongGuesses < 6) {
             char guess = enterGuess();
@@ -44,20 +52,43 @@ public class Main {
         scanner.close();
     }
 
-    static void welcome() {
-        System.out.println("******************");
-        System.out.println("Java Hangman game!");
-        System.out.println("******************");
+    static String getWord() {
+        ArrayList<String> words = new ArrayList<>();
+
+        try (
+                BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                words.add(line.trim());
+            }
+
+            return words.get(random.nextInt(words.size()));
+        } catch (FileNotFoundException e) {
+            System.out.println("Words file was not found!");
+        } catch (IOException e) {
+            System.out.println("Something went wrong!");
+        }
+
+        return null;
     }
 
     static ArrayList<Character> initializeWordState(String word) {
         ArrayList<Character> wordState = new ArrayList<>();
 
+        System.out.print("word: ");
         for (int i = 0; i < word.length(); i++) {
             wordState.add('_');
+            System.out.print("_ ");
         }
+        System.out.println();
 
         return wordState;
+    }
+
+    static void welcome() {
+        System.out.println("******************");
+        System.out.println("Java Hangman game!");
+        System.out.println("******************");
     }
 
     static void showHangman(int wrongGuesses) {
