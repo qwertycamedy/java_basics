@@ -1,32 +1,25 @@
-import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // HashMap - коллекция с данными ключ-значение
-        // ключ - уникален, но можно перезатереть
-        // значение - можно добавлять сколько угодно данных с одинаковыми значениями
+        try (Scanner scanner = new Scanner(System.in)) {
+            Day day;
 
-        HashMap<String, Double> map = new HashMap<>();
+            System.out.print("Enter a day name: ");
+            String response = scanner.nextLine().toUpperCase();
 
-        // основные методы HashMap
-        map.put("apple", 0.5);
-        map.put("pineapple", 0.7);
-        map.put("grape", 1.0);
-        map.put("granade", 1.2);
+            day = Day.valueOf(response);
 
-        map.put("pineapple", 1.0);
-        System.out.println(map + " " +
-                map.size());
-
-        if (map.containsKey("apple")) {
-            Double value = map.get("apple");
-            System.out.println(value);
-        }
-
-        for (String key : map.keySet()) {
-            if (map.get(key) == 1.0) {
-                System.out.println(map.containsValue(1.0));
+            switch (day) {
+                case MONDAY, TUESDAY, WEDNESSDAY, THURSDAY, FRIDAY -> {
+                    System.out.printf("This day is %d weekday!", day.getDayNumber());
+                }
+                case SATURDAY, SUNDAY, QCDAY -> {
+                    System.out.printf("This day is %d weekend!", day.getDayNumber());
+                }
             }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Enter a valid day on next time!");
         }
     }
 }
