@@ -2,24 +2,26 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            Day day;
+        Scanner scanner = new Scanner(System.in);
+        // создание нового потока
+        MyRunnable myRunnable = new MyRunnable();
+        Thread thread = new Thread(myRunnable);
+        // ставим true в setDaemon, если хотим, чтобы наш поток завершился вместе с
+        // завершением main потока
+        thread.setDaemon(true);
 
-            System.out.print("Enter a day name: ");
-            String response = scanner.nextLine().toUpperCase();
+        String name;
 
-            day = Day.valueOf(response);
+        System.out.println("У тебя 5 секунд, чтобы ввести свое имя!");
 
-            switch (day) {
-                case MONDAY, TUESDAY, WEDNESSDAY, THURSDAY, FRIDAY -> {
-                    System.out.printf("This day is %d weekday!", day.getDayNumber());
-                }
-                case SATURDAY, SUNDAY, QCDAY -> {
-                    System.out.printf("This day is %d weekend!", day.getDayNumber());
-                }
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Enter a valid day on next time!");
-        }
+        // вызываем наш поток для параллельного выполнения (есть еще run, который
+        // заставит вести код не параллельно, а в основном потоке вместе с main)
+        thread.start();
+
+        System.out.print("Введи свое имя: ");
+        name = scanner.nextLine();
+        System.out.println("Hello " + name);
+
+        scanner.close();
     }
 }
