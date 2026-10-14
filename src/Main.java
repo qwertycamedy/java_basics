@@ -1,27 +1,19 @@
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        // создание нового потока
-        MyRunnable myRunnable = new MyRunnable();
-        Thread thread = new Thread(myRunnable);
-        // ставим true в setDaemon, если хотим, чтобы наш поток завершился вместе с
-        // завершением main потока
-        thread.setDaemon(true);
+        Thread thread1 = new Thread(new MyRunnable("PING"));
+        Thread thread2 = new Thread(new MyRunnable("PONG"));
 
-        String name;
+        System.out.println("Game Started!");
+        thread1.start();
+        thread2.start();
 
-        System.out.println("У тебя 5 секунд, чтобы ввести свое имя!");
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            System.out.println("main thread was interrupted!");
+        }
 
-        // вызываем наш поток для параллельного выполнения (есть еще run, который
-        // заставит вести код не параллельно, а в основном потоке вместе с main)
-        thread.start();
-
-        System.out.print("Введи свое имя: ");
-        name = scanner.nextLine();
-        System.out.println("Hello " + name);
-
-        scanner.close();
+        System.out.println("Game over!");
     }
 }
