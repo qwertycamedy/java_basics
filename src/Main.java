@@ -1,19 +1,32 @@
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
+
 public class Main {
+    static final String soundPath = "src/alarm_sound.wav";
+
     public static void main(String[] args) {
-        Thread thread1 = new Thread(new MyRunnable("PING"));
-        Thread thread2 = new Thread(new MyRunnable("PONG"));
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Game Started!");
-        thread1.start();
-        thread2.start();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime alarmTime = null;
+        String inputTime;
 
-        try {
-            thread1.join();
-            thread2.join();
-        } catch (InterruptedException e) {
-            System.out.println("main thread was interrupted!");
+        while (alarmTime == null) {
+            try {
+                System.out.println("Enter alarm time: (HH:mm:ss)");
+                inputTime = scanner.nextLine();
+
+                alarmTime = LocalTime.parse(inputTime, dateTimeFormatter);
+                System.out.println("alarm set in: " + alarmTime);
+            } catch (DateTimeParseException e) {
+                System.out.println("Enter valid time!");
+            }
         }
 
-        System.out.println("Game over!");
+        AlarmClock alarmClock = new AlarmClock(alarmTime, soundPath, scanner);
+        Thread alarmThread = new Thread(alarmClock);
+        alarmThread.start();
     }
 }
